@@ -1,8 +1,16 @@
 import { Logger } from "../lib/log"
+import dotenv from 'dotenv';
+import * as config from '../config.json'
+import { Scraper } from "./scraper";
 
 (async () => {
+	dotenv.config()
 	const logger = Logger.getInstance()
 	logger.info("Starting scrape...")
+
+	const scraper = new Scraper(config)
+	console.log(`config: `, JSON.stringify(config))
+
 
 
 
