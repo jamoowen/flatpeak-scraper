@@ -1,15 +1,6 @@
 import Imap from "node-imap";
 import { simpleParser, ParsedMail } from "mailparser";
-import { Result, err, ok } from "../lib/types"
-
-type SimplifiedEmail = {
-	dateSent: Date;
-	from: string;
-	subject: string;
-	message: string;
-};
-
-
+import { Result, err, ok, EmailDetails } from "../lib/types"
 
 export class ImapService {
 	private readonly imap: Imap;
@@ -45,16 +36,17 @@ export class ImapService {
 		}
 	}
 
-	public async getEmailsSince(fromDate: Date): Promise<Result<SimplifiedEmail[], Error>> {
+	public async getEmailsSince(fromDate: Date): Promise<Result<EmailDetails[], Error>> {
 		if (!this.isConnected) {
 			return err(new Error("IMAP is not connected"));
 		}
+		console.log(`FEtching emails from: `, fromDate)
 
 		const rawEmails = await this.getEmailData(fromDate); // however you're getting them
 		if (rawEmails.ok === false) {
 			return rawEmails
 		}
-		const simplifiedEmails: SimplifiedEmail[] = rawEmails.value.map(email => ({
+		const simplifiedEmails: EmailDetails[] = rawEmails.value.map(email => ({
 			dateSent: new Date(email.date),
 			from: email.from?.text ?? '', // or `.value[0].address` if that's your structure
 			subject: email.subject ?? 'no subject',

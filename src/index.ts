@@ -10,27 +10,16 @@ import { sleep } from "../lib/utils";
 	const logger = Logger.getInstance()
 	logger.info("Starting scrape...")
 
-	const imapEmail = process.env.GMAIL_EMAIL_ADDRESS
-	const imapPassword = process.env.GMAIL_APP_PASSWORD
-	const imapHost = "imap.gmail.com"
-	const imapPort = 993
+	const imapEmail = process.env.IMAP_EMAIL_ADDRESS
+	const imapPassword = process.env.IMAP_PASSWORD
+	const imapHost = process.env.IMAP_HOST
+	const imapPort = process.env.IMAP_PORT
 
-	const imapService = new ImapService(imapEmail, imapPassword, imapHost, imapPort)
+	const imapService = new ImapService(imapEmail, imapPassword, imapHost, +imapPort)
 	const scraper = new Scraper(config, imapService)
 
-	const now = new Date()
-	const otpReq = await scraper.requestOtp()
-	logger.info("Waiting for email...")
-	await sleep(10)
-	const emailFilter = {
-		fromDate: now
-	}
-	logger.info("fetching otp now...")
-	const otpResp = await scraper.pollForOtp(10, emailFilter)
-
-	logger.info(JSON.stringify(otpResp))
-
-
+	const stuff = await scraper.infiltrateFlatPeak()
+	logger.info(JSON.stringify(stuff))
 
 	/// request temp email
 	//

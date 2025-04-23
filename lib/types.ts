@@ -23,12 +23,31 @@ export function err<T = never, E = unknown>(error: E): Err<T, E> {
 	return { ok: false, error }
 }
 
+
+type FlatPeakInfo = {
+	otpRequestUrl: string;
+	otpMaxPollAttempts: number
+	otpExpectedFromEmail: string;
+	submitOtpUrl: string;
+}
+
 export type ScrapeConfig = {
+	flatPeakInfo: FlatPeakInfo;
 	headers: Record<string, any>;
 	[key: string]: any
 }
 
 export type EmailFilter = {
+	fromDate: Date
 	fromEmail?: string;
-	fromDate?: Date
 }
+
+export type EmailDetails = {
+	dateSent: Date;
+	from: string;
+	subject: string;
+	message: string;
+};
+
+
+

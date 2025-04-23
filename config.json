@@ -1,10 +1,9 @@
 {
-	"tempMail": {
-		"baseUrl": "https://web2.temp-mail.org",
-		"newEmailEndpoint": "/mailbox",
-		"getEmailEndpoint": "/messages",
-		"origin": "https://temp-mail.org",
-		"referer": "https://temp-mail.org/"
+	"flatPeakInfo": {
+		"otpRequestUrl": "",
+		"otpMaxPollAttempts": 20,
+		"otpExpectedFromEmail": "login@stytch.com",
+		"submitOtpUrl": ""
 	},
 	"headers": {
 		"accept": "*/*",
