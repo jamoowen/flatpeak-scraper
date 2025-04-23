@@ -1,21 +1,31 @@
-import { get } from "../lib/http"
-import { ScrapeConfig } from "../lib/types"
+import { ImapService } from "../lib/email"
+import { get, post } from "../lib/http"
+import { EmailFilter, err, ok, Result, ScrapeConfig } from "../lib/types"
 
 export class Scraper {
-	private readonly config: Record<string, any>
+	private readonly config: ScrapeConfig
+	private readonly imapService: ImapService
 
-	constructor(config: ScrapeConfig) {
+	constructor(config: ScrapeConfig, imapService: ImapService) {
 		this.config = config
+		this.imapService = imapService
 	}
 
 
-	public async requestTempEmail() {
-		const headers = this.config.headers
-		headers.origin = this.config.tempMailBaseUrl
-		headers.referer = this.config.tempMailBaseUrl
-		const res = await get(this.config.tempMailBaseUrl, headers)
-		if (!res.ok) {
-			console.error()
-		}
+	public async requestOtp(): Promise<Result<any, Error>> {
+		return ok(null)
 	}
+
+	public async pollForOtp(attempts: number, filter: EmailFilter): Promise<Result<any, Error>> {
+		await this.imapService.connect()
+		//1 min ago
+		const now = Date.now() - 60 * 1000
+		const otp = await this.imapService.getEmailsSince(new Date(now))
+		this.imapService.disconnect()
+		return otp
+
+	}
+
+
+
 }
