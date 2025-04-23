@@ -3,9 +3,10 @@
 - entrypoint: src/index.ts
 - most of logic: src/infiltrator.ts
 
-Base url: https://dashboard.flatpeak.com
+** For a demo have a look at the video.mov in the root dir  
 
 ## The flow:
+Base url: https://dashboard.flatpeak.com
 1. hit POST /api/trpc/auth.loginEmail?batch=1 to submit email && request otp
 => retrieve methodId from response
 2. intercept otp email and extract the opt
