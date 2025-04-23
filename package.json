@@ -5,9 +5,10 @@
   "main": "dist/src/index.js",
   "scripts": {
     "build": "tsc",
-    "start": "node dist/src/index.js",
-    "dev": "tsc && node dist/src/index.js",
-    "test": "npx jest test"
+    "start": "node dist/src/local.js",
+    "dev": "tsc && node dist/src/local.js",
+    "test": "npx jest test",
+    "zip": "rm -rf lambda.zip zip -r lambda.zip dist node_modules config.json"
   },
   "keywords": [],
   "author": "",

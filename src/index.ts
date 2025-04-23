@@ -1,3 +1,4 @@
+// src/handler.ts
 import { Logger } from "../lib/log"
 import dotenv from 'dotenv';
 import * as baseConfig from '../config.json'
@@ -6,8 +7,9 @@ import { ImapService } from "../lib/email";
 import { HttpService } from "../lib/http";
 import { ScrapeConfig } from "../lib/types";
 
-(async () => {
-	dotenv.config()
+dotenv.config()
+
+export const handler = async (event: any = {}): Promise<any> => {
 	const logger = Logger.getInstance()
 	logger.info("Infiltration mission started: GRAB SOME KEYS")
 
@@ -29,9 +31,14 @@ import { ScrapeConfig } from "../lib/types";
 	const keys = await scraper.infiltrateFlatPeak()
 	if (keys.ok === false) {
 		logger.error(`Mission failed. We'll get em next time. `, keys.error)
-		process.exit(1)
+		return {
+			statusCode: 500,
+			body: JSON.stringify({ error: keys.error.message }),
+		}
 	}
 	logger.info(`Mission success: `, keys.value)
-	process.exit(0)
-
-})()
+	return {
+		statusCode: 200,
+		body: JSON.stringify(keys.value),
+	}
+}
