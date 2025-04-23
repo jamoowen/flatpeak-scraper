@@ -1,8 +1,11 @@
-Simple scraper used to get hold of Flatpeak api keys
+# Simple scraper used to get hold of Flatpeak api keys
+
+- entrypoint: src/index.ts
+- most of logic: src/infiltrator.ts
 
 Base url: https://dashboard.flatpeak.com
 
-The flow:
+## The flow:
 1. hit POST /api/trpc/auth.loginEmail?batch=1 to submit email && request otp
 => retrieve methodId from response
 2. intercept otp email and extract the opt
@@ -13,13 +16,15 @@ The flow:
 => retrieve the keys
 
 
-to run:
-git pull 
-npm i
+## to run:
+- git pull 
+- npm i
 
-add email creds as env vars (see example.env)
+- add email creds as env vars (see example.env)
 
-npm run dev || npm build, npm start
+- npm run dev || npm build, npm start
 
-to test: npm test
+
+## to test: 
+- npm test
 
