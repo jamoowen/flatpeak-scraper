@@ -2,6 +2,12 @@ import Imap from "node-imap";
 import { simpleParser, ParsedMail } from "mailparser";
 import { Result, err, ok, EmailDetails } from "../lib/types"
 
+export interface ImapProcessor {
+	connect(): Promise<Result<void, Error>>;
+	disconnect(): void;
+	getEmailsSince(fromDate: Date): Promise<Result<EmailDetails[], Error>>;
+}
+
 export class ImapService {
 	private readonly imap: Imap;
 	private isConnected: boolean = false;
@@ -16,15 +22,17 @@ export class ImapService {
 		});
 	}
 
-	public connect(): Promise<void> {
-		if (this.isConnected) return Promise.resolve();
+	public connect(): Promise<Result<void, Error>> {
+		if (this.isConnected) return Promise.resolve(ok(undefined));
 
-		return new Promise((resolve, reject) => {
+		return new Promise((resolve) => {
 			this.imap.once("ready", () => {
 				this.isConnected = true;
-				resolve();
+				resolve(ok(undefined));
 			});
-			this.imap.once("error", reject);
+			this.imap.once("error", (error) => {
+				resolve(err(new Error(`IMAP connection error: ${error.message}`)));
+			});
 			this.imap.connect();
 		});
 	}

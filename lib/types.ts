@@ -1,5 +1,4 @@
 
-
 // Result Types
 export type Ok<T, E = never> = {
 	ok: true
@@ -23,15 +22,18 @@ export function err<T = never, E = unknown>(error: E): Err<T, E> {
 	return { ok: false, error }
 }
 
-
 type FlatPeakInfo = {
+	baseUrl: string;
+	otpMaxPollAttempts: number;
+	otpExpectedFromEmail: string
 	otpRequestUrl: string;
-	otpMaxPollAttempts: number
-	otpExpectedFromEmail: string;
-	submitOtpUrl: string;
+	otpSubmitUrl: string;
+	keysUrl: string;
+	logoutUrl: string;
 }
 
 export type ScrapeConfig = {
+	infiltrationEmail: string;
 	flatPeakInfo: FlatPeakInfo;
 	headers: Record<string, any>;
 	[key: string]: any

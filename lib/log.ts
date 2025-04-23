@@ -1,6 +1,3 @@
-
-
-
 export class Logger {
 	private static instance: Logger;
 
